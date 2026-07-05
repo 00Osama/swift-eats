@@ -1,10 +1,14 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fooddeliveryapp/auth/services/auth_gate.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fooddeliveryapp/core/localization/locals_cubit.dart';
+import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/core/theme/theme_cubit.dart';
+import 'package:fooddeliveryapp/features/auth/pages/splash_page.dart';
 import 'package:fooddeliveryapp/firebase_options.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:fooddeliveryapp/generated/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,14 +16,22 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarColor: Colors.grey[400],
+    const SystemUiOverlayStyle(
+      statusBarColor: AppColors.surface,
       statusBarIconBrightness: Brightness.dark,
     ),
   );
   runApp(
-    DevicePreview(
-      builder: (context) => MyApp(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => LanguageCubit()..loadLanguagePreference(),
+        ),
+        BlocProvider(
+          create: (_) => ThemeCubit()..loadThemePreference(),
+        ),
+      ],
+      child: const MyApp(),
     ),
   );
 }
@@ -31,73 +43,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: AppBarTheme(
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.grey[400],
-            statusBarIconBrightness: Brightness.dark,
-          ),
-        ),
-      ),
+      localizationsDelegates: [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: context.watch<LanguageCubit>().locale,
+      theme: AppTheme.lightTheme(context),
+      darkTheme: AppTheme.darkTheme(context),
+      themeMode: context.watch<ThemeCubit>().themeMode,
       home: const SplashScreen(),
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
-
-  @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToMainScreen();
-  }
-
-  Future<void> _navigateToMainScreen() async {
-    await Future.delayed(
-      const Duration(
-        seconds: 3,
-      ),
-    );
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const AuthGate(),
-        ),
-      );
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/appSplash.png',
-              width: screenSize.width * 0.6,
-              height: screenSize.height * 0.25,
-              fit: BoxFit.contain,
-            ),
-            SizedBox(height: 35),
-            LoadingAnimationWidget.inkDrop(
-              color: Colors.redAccent.shade100,
-              size: 50,
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
