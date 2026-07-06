@@ -60,6 +60,36 @@ class S {
     );
   }
 
+  /// `Sign Out Confirmation`
+  String get signOutConfirmation {
+    return Intl.message(
+      'Are you sure you want to sign out ?!',
+      name: 'signOutConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `reset`
+  String get reset {
+    return Intl.message(
+      'reset',
+      name: 'reset',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `manage`
+  String get manage {
+    return Intl.message(
+      'manage',
+      name: 'manage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Driver Profile`
   String get profileDriver {
     return Intl.message(
@@ -613,7 +643,7 @@ class S {
   /// `choose new role here`
   String get chooseNewRoleHere {
     return Intl.message(
-      'choose new role here',
+      'new role',
       name: 'chooseNewRoleHere',
       desc: '',
       args: [],
@@ -623,7 +653,7 @@ class S {
   /// `price per order (when new role is driver)`
   String get pricePerOrderWhenDriver {
     return Intl.message(
-      'price per order (when new role is driver)',
+      'price per order',
       name: 'pricePerOrderWhenDriver',
       desc: '',
       args: [],
@@ -655,6 +685,16 @@ class S {
     return Intl.message(
       'admin',
       name: 'adminRole',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Food Found`
+  String get noFoodFound {
+    return Intl.message(
+      'No Food Found',
+      name: 'noFoodFound',
       desc: '',
       args: [],
     );

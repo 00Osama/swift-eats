@@ -18,7 +18,7 @@ class DriverData extends StatelessWidget {
 
     final int orders = driver['orders'] ?? 0;
     final int salaryPerOrder = driver['salaryPerOrder'] ?? 0;
-    final int salary = driver['salary'] ?? (orders * salaryPerOrder);
+    final int salary = driver['orders'] * driver['salaryPerOrder'];
     final String image = driver['profileImage']?.toString() ?? '';
 
     return Container(

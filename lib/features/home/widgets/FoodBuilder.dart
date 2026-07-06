@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/features/home/widgets/FoodItem.dart';
 import 'package:fooddeliveryapp/features/home/widgets/food_details.dart';
+import 'package:fooddeliveryapp/generated/l10n.dart';
 
 // ignore: must_be_immutable
 class FoodBuilder extends StatelessWidget {
@@ -52,9 +53,9 @@ class FoodBuilder extends StatelessWidget {
 
         /// empty data
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return const Center(
+          return Center(
             child: Text(
-              'No Foods found',
+              S().noFoodFound,
               style: TextStyle(
                 fontFamily: 'Ubuntu',
               ),

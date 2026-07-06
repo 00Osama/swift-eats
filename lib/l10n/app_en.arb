@@ -54,8 +54,8 @@
   "noFoodsFound": "No Foods found",
   "changeRolesTitle": "Change Roles",
   "changeRolesHint": "Choose a role for this user",
-  "chooseNewRoleHere": "choose new role here",
-  "pricePerOrderWhenDriver": "price per order (when new role is driver)",
+  "chooseNewRoleHere": "new role",
+  "pricePerOrderWhenDriver": "price per order",
   "userRole": "user",
   "driverRole": "driver",
   "adminRole": "admin",
@@ -193,5 +193,9 @@
   "orderSecurityCodeIsWrong": "Order Security Code is Wrong", 
   "unExpectedError": "An unexpected error occurred, please try again", 
   "pricePerOrder": "Price Per Order",
-  "profileDriver": "Driver Profile"   
+  "profileDriver": "Driver Profile", 
+  "signOutConfirmation": "Are you sure you want to sign out ?!", 
+  "reset": "Reset", 
+  "manage": "manage", 
+  "noFoodFound": "No Food Found"
 }

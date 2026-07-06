@@ -192,33 +192,49 @@ class _AddNewFoodState extends State<AddNewFood> {
     );
   }
 
-  Future<void> uploadImage(context) async {
-    if (imageFile != null) {
-      try {
-        FirebaseStorage storage = FirebaseStorage.instance;
-        String fileName = imageFile!.path.split('/').last;
-        Reference ref = storage.ref().child('profile/$fileName');
-        UploadTask uploadTask = ref.putFile(imageFile!);
+  Future<void> uploadImage(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const Center(
+        child: CircularProgressIndicator(
+          color: AppColors.black,
+        ),
+      ),
+    );
+
+    try {
+      if (imageFile != null) {
+        final storage = FirebaseStorage.instance;
+        final fileName = imageFile!.path.split('/').last;
+        final ref = storage.ref().child('profile/$fileName');
+
+        final uploadTask = ref.putFile(imageFile!);
 
         imageUrl = await (await uploadTask).ref.getDownloadURL();
         imagePath = ref.fullPath;
-      } catch (e) {
-        message(
-          context,
-          title: S.of(context).error,
-          content: e.toString(),
-          buttonText: S.of(context).failedToUploadImage,
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        );
       }
+    } catch (e) {
+      if (context.mounted && Navigator.canPop(context)) {
+        Navigator.pop(context); // Close loading dialog
+      }
+
+      message(
+        context,
+        title: S.of(context).error,
+        content: e.toString(),
+        buttonText: S.of(context).failedToUploadImage,
+        onPressed: () => Navigator.pop(context),
+      );
+
+      rethrow;
     }
   }
 
-  Future<void> uploadFood(context) async {
-    await uploadImage(context);
+  Future<void> uploadFood(BuildContext context) async {
     try {
+      await uploadImage(context);
+
       await FirebaseFirestore.instance.collection(dropDownValue).add({
         'timeStamp': Timestamp.now(),
         'foodName': foodName.text,
@@ -226,15 +242,21 @@ class _AddNewFoodState extends State<AddNewFood> {
         'ImagePath': imagePath,
         'foodPrice': foodPrice.text,
       });
+
+      if (context.mounted && Navigator.canPop(context)) {
+        Navigator.pop(context); // Close loading dialog
+      }
     } catch (e) {
+      if (context.mounted && Navigator.canPop(context)) {
+        Navigator.pop(context); // Close loading if still open
+      }
+
       message(
         context,
         title: S.of(context).error,
-        content: 'failed to add food, please try again',
+        content: S.of(context).failedToAddFood,
         buttonText: S.of(context).ok,
-        onPressed: () {
-          Navigator.pop(context);
-        },
+        onPressed: () => Navigator.pop(context),
       );
     }
   }
@@ -282,62 +304,36 @@ class _AddNewFoodState extends State<AddNewFood> {
               ),
             ),
             const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 120),
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                decoration: BoxDecoration(
-                  color: AppColors.skeletonDark,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: DropdownButton(
-                  dropdownColor: AppColors.white,
-                  iconEnabledColor: AppColors.dropdownIcon,
-                  iconDisabledColor: AppColors.muted,
-                  icon: const Icon(Icons.menu_rounded),
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontFamily: 'Ubuntu',
+            Center(
+              child: DropdownMenu<String>(
+                width: 180,
+                initialSelection: dropDownValue,
+                trailingIcon: const Icon(Icons.keyboard_arrow_down_rounded),
+                selectedTrailingIcon:
+                    const Icon(Icons.keyboard_arrow_up_rounded),
+                dropdownMenuEntries: [
+                  DropdownMenuEntry(
+                    value: 'Foods    ',
+                    label: S.of(context).foodsEditing,
                   ),
-                  focusColor: AppColors.dropdownFocus,
-                  value: dropDownValue,
-                  items: const [
-                    DropdownMenuItem(
-                      value: 'Foods    ',
-                      child: Text(
-                        'Foods    ',
-                        style: TextStyle(fontFamily: 'Ubuntu'),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Drinks    ',
-                      child: Text(
-                        'Drinks    ',
-                        style: TextStyle(fontFamily: 'Ubuntu'),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Snacks    ',
-                      child: Text(
-                        'Snacks    ',
-                        style: TextStyle(fontFamily: 'Ubuntu'),
-                      ),
-                    ),
-                    DropdownMenuItem(
-                      value: 'Desserts    ',
-                      child: Text(
-                        'Desserts    ',
-                        style: TextStyle(fontFamily: 'Ubuntu'),
-                      ),
-                    ),
-                  ],
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      dropDownValue = newValue!;
-                    });
-                  },
-                ),
+                  DropdownMenuEntry(
+                    value: 'Drinks    ',
+                    label: S.of(context).drinksEditing,
+                  ),
+                  DropdownMenuEntry(
+                    value: 'Snacks    ',
+                    label: S.of(context).snacksEditing,
+                  ),
+                  DropdownMenuEntry(
+                    value: 'Desserts    ',
+                    label: S.of(context).dessertsEditing,
+                  ),
+                ],
+                onSelected: (value) {
+                  setState(() {
+                    dropDownValue = value!;
+                  });
+                },
               ),
             ),
             const SizedBox(height: 40),
@@ -483,16 +479,7 @@ class _AddNewFoodState extends State<AddNewFood> {
                   if (foodNameErrorText == null &&
                       foodPriceErrorText == null &&
                       isImagePicked) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => const Center(
-                        child:
-                            CircularProgressIndicator(color: AppColors.black),
-                      ),
-                    );
                     await uploadFood(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
                   }
                 },
                 child: Text(

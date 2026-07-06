@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/helpers/error_message.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/core/widgets/MyTextfield.dart';
-import 'package:fooddeliveryapp/core/helpers/error_message.dart';
+import 'package:fooddeliveryapp/features/profile/widgets/role_chip.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 
 class ChangeRole extends StatefulWidget {
@@ -39,6 +40,19 @@ class _ChangeRoleState extends State<ChangeRole> {
 
   String? dropDownValue;
   List<DropdownMenuItem<String>>? dropItems;
+
+  String getRoleName(BuildContext context, String role) {
+    switch (role.toLowerCase()) {
+      case 'admin':
+        return S.of(context).adminRole;
+      case 'driver':
+        return S.of(context).driverRole;
+      case 'user':
+        return S.of(context).userRole;
+      default:
+        return role;
+    }
+  }
 
   @override
   void initState() {
@@ -79,18 +93,6 @@ class _ChangeRoleState extends State<ChangeRole> {
         child: ListView(
           children: [
             const SizedBox(height: 15),
-            Center(
-              child: Text(
-                S.of(context).changeRolesHint,
-                style: TextStyle(
-                  fontSize: 15,
-                  fontFamily: 'Ubuntu',
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.secondary,
-                ),
-              ),
-            ),
-            const SizedBox(height: 8),
             MyTextField(
               controller: email,
               hintText: S.of(context).email,
@@ -98,9 +100,9 @@ class _ChangeRoleState extends State<ChangeRole> {
               errorText: emailErrorText,
               readOnly: false,
             ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 130),
+            const SizedBox(height: 25),
+            FractionallySizedBox(
+              widthFactor: 0.80,
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
@@ -208,89 +210,106 @@ class _ChangeRoleState extends State<ChangeRole> {
                       ),
                     ];
                   }
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.infinity,
-                      height: 300,
-                      decoration: BoxDecoration(
-                        color: AppColors.skeletonHighlight,
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text(
-                            S.of(context).nameLabel(data['FullName']),
+                  return Container(
+                    margin: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(.05),
+                          blurRadius: 12,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Center(
+                          child: Text(
+                            data['FullName'],
                             style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Ubuntu',
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.black,
+                              fontFamily: 'Ubuntu',
                             ),
                           ),
-                          Text(
-                            S.of(context).currentRoleLabel(data['role']),
-                            style: const TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'Ubuntu',
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.black,
+                        ),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: RoleChip(
+                            role: data['role'],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          S.of(context).chooseNewRoleHere,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Ubuntu',
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        DropdownMenu<String>(
+                          width: double.infinity,
+                          initialSelection: dropDownValue,
+                          hintText: S.of(context).chooseNewRoleHere,
+                          trailingIcon:
+                              const Icon(Icons.keyboard_arrow_down_rounded),
+                          selectedTrailingIcon:
+                              const Icon(Icons.keyboard_arrow_up_rounded),
+                          dropdownMenuEntries: dropItems!
+                              .map(
+                                (item) => DropdownMenuEntry(
+                                  value: item.value!,
+                                  label: (item.child as Text).data ?? '',
+                                ),
+                              )
+                              .toList(),
+                          onSelected: (value) {
+                            setState(() {
+                              dropDownValue = value;
+                            });
+                          },
+                        ),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 250),
+                          child: dropDownValue == 'driver'
+                              ? Padding(
+                                  padding: const EdgeInsets.only(top: 18),
+                                  child: MyTextField(
+                                    controller: price,
+                                    hintText:
+                                        S.of(context).pricePerOrderWhenDriver,
+                                    obscureText: false,
+                                    errorText: priceErrorText,
+                                    readOnly: false,
+                                    inputType: TextInputType.number,
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          height: 52,
+                          child: ElevatedButton.icon(
+                            label: Text(
+                              S.of(context).saveChanges,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Ubuntu',
+                              ),
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                S.of(context).chooseNewRoleHere,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontFamily: 'Ubuntu',
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.black,
-                                ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.neutralButton,
+                              foregroundColor: AppColors.neutralButtonText,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
                               ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 12),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0, vertical: 4.0),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.skeletonDark,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  child: DropdownButton(
-                                    dropdownColor: AppColors.white,
-                                    iconEnabledColor: AppColors.dropdownIcon,
-                                    iconDisabledColor: AppColors.muted,
-                                    icon: const Icon(Icons.menu_rounded),
-                                    style: const TextStyle(
-                                      color: AppColors.black,
-                                      fontFamily: 'Ubuntu',
-                                    ),
-                                    focusColor: AppColors.dropdownFocus,
-                                    value: dropDownValue,
-                                    items: dropItems,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        dropDownValue = newValue!;
-                                      });
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          MyTextField(
-                            controller: price,
-                            hintText: S.of(context).pricePerOrderWhenDriver,
-                            obscureText: false,
-                            errorText: priceErrorText,
-                            readOnly: false,
-                            inputType: TextInputType.number,
-                          ),
-                          ElevatedButton(
+                            ),
                             onPressed: () {
                               if (dropDownValue == null) {
                                 message(
@@ -306,7 +325,7 @@ class _ChangeRoleState extends State<ChangeRole> {
                                   price.text.isEmpty) {
                                 setState(() {
                                   priceErrorText =
-                                      S.of(context).requiredWhenDriver;
+                                      S.of(context).thisFieldIsRequired;
                                 });
                               } else if (dropDownValue == 'driver' &&
                                   int.tryParse(price.text) == null) {
@@ -355,33 +374,38 @@ class _ChangeRoleState extends State<ChangeRole> {
                                 }
                               }
                             },
-                            style: ButtonStyle(
-                              backgroundColor: WidgetStateProperty.all(
-                                  AppColors.neutralButton),
-                            ),
-                            child: Text(
-                              S.of(context).saveChanges,
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontFamily: 'Ubuntu',
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.neutralButtonText,
-                              ),
-                            ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 } else {
                   return Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(16),
                     child: Container(
+                      height: 290,
                       width: double.infinity,
-                      height: 300,
                       decoration: BoxDecoration(
-                        color: AppColors.skeletonHighlight,
-                        borderRadius: BorderRadius.circular(15),
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                      child: Center(
+                        child: Container(
+                          width: 90,
+                          height: 90,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.green.withValues(alpha: .12),
+                          ),
+                          child: Icon(
+                            Icons.manage_accounts_rounded,
+                            size: 42,
+                            color: Colors.green,
+                          ),
+                        ),
                       ),
                     ),
                   );

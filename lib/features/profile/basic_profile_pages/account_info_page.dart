@@ -5,7 +5,6 @@ import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fooddeliveryapp/core/widgets/MyTextfield.dart';
-import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
 import 'package:shimmer/shimmer.dart';
 
 class AccountInfo extends StatefulWidget {
@@ -166,25 +165,6 @@ class _AccountInfoState extends State<AccountInfo> {
                 );
               },
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              style: const ButtonStyle(
-                backgroundColor:
-                    WidgetStatePropertyAll(Color.fromARGB(178, 244, 67, 54)),
-              ),
-              onPressed: () {
-                AuthService().signOut();
-                Navigator.pop(context);
-              },
-              child: Text(
-                S.of(context).accountInfoSignOut,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: 'Ubuntu',
-                  color: AppColors.black,
-                ),
-              ),
-            )
           ],
         ),
       ),

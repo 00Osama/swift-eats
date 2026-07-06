@@ -84,7 +84,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("اختر سعر الطعام"),
         "chooseImageButton": MessageLookupByLibrary.simpleMessage("اختر صورة"),
         "chooseNewRoleHere":
-            MessageLookupByLibrary.simpleMessage("اختر الدور الجديد هنا"),
+            MessageLookupByLibrary.simpleMessage("الدور الجديد"),
+        "noFoodFound":
+            MessageLookupByLibrary.simpleMessage("لم يتم العثور على طعام"),
         "choosePhoto": MessageLookupByLibrary.simpleMessage("اختر صورة"),
         "chooseProfilePhotoSubtitle":
             MessageLookupByLibrary.simpleMessage("اختياري لكن موصى به"),
@@ -101,7 +103,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("وقت البدء الحالي"),
         "customerInfo": MessageLookupByLibrary.simpleMessage("معلومات العميل"),
         "customizeThemeAndLanguage":
-            MessageLookupByLibrary.simpleMessage("تخصيص التصميم واللغة"),
+            MessageLookupByLibrary.simpleMessage("تخصيص السمه واللغة"),
         "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "deleteWarning": MessageLookupByLibrary.simpleMessage("تنبيه الحذف"),
         "deleteWarningMessage": m3,
@@ -234,8 +236,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("يرجى اختيار صورة الطعام"),
         "pleaseSelectRole":
             MessageLookupByLibrary.simpleMessage("يرجى اختيار دور"),
-        "pricePerOrderWhenDriver": MessageLookupByLibrary.simpleMessage(
-            "السعر لكل طلب (عندما يكون الدور الجديد سائقًا)"),
+        "pricePerOrderWhenDriver":
+            MessageLookupByLibrary.simpleMessage("السعر لكل طلب"),
         "proceedToPayment":
             MessageLookupByLibrary.simpleMessage("المتابعة للدفع"),
         "pricePerOrder": MessageLookupByLibrary.simpleMessage("السعر لكل طلب"),
@@ -244,6 +246,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الملف الشخصي للمدير"),
         "profileDriver":
             MessageLookupByLibrary.simpleMessage("الملف الشخصي للسائق"),
+        "signOutConfirmation": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد تسجيل الخروج !؟"),
         "profileErrorWithDetails": m6,
         "quantityLabel": m7,
         "removeFromCart":
@@ -289,11 +293,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "swipeForMoreDetails": MessageLookupByLibrary.simpleMessage(
             "اسحب العنصر لمزيد من التفاصيل"),
         "themeAndLanguage":
-            MessageLookupByLibrary.simpleMessage("المظهر واللغة"),
+            MessageLookupByLibrary.simpleMessage("السمه واللغة"),
         "themeOptionDark": MessageLookupByLibrary.simpleMessage("داكن"),
+        "reset": MessageLookupByLibrary.simpleMessage("إعادة تعيين"),
+        "manage": MessageLookupByLibrary.simpleMessage("إدارة"),
         "themeOptionLight": MessageLookupByLibrary.simpleMessage("فاتح"),
         "themeOptionSystem": MessageLookupByLibrary.simpleMessage("النظام"),
-        "themeSectionTitle": MessageLookupByLibrary.simpleMessage("المظهر"),
+        "themeSectionTitle": MessageLookupByLibrary.simpleMessage("السمه"),
         "thisFieldIsRequired":
             MessageLookupByLibrary.simpleMessage("هذا الحقل مطلوب"),
         "totalPrice": MessageLookupByLibrary.simpleMessage("السعر الكلي : "),

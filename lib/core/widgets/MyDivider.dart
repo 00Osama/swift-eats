@@ -21,7 +21,7 @@ class MyDivider extends StatelessWidget {
             height: dividerHeight,
             width: double.infinity,
             decoration: BoxDecoration(
-              color: const Color.fromARGB(113, 0, 0, 0),
+              color: const Color.fromARGB(81, 0, 0, 0),
               borderRadius: BorderRadius.circular(20),
             ),
           ),

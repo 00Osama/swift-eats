@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/change_role.dart';
+import 'package:fooddeliveryapp/features/profile/widgets/custom_slidable.dart';
 import 'package:fooddeliveryapp/features/profile/widgets/driver_data.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 
@@ -114,20 +115,29 @@ class _ManageDriversState extends State<ManageDrivers> {
                                   endActionPane: ActionPane(
                                     motion: const StretchMotion(),
                                     children: [
-                                      SlidableAction(
-                                        onPressed: (context) async {
-                                          FirebaseFirestore.instance
-                                              .collection('users')
-                                              .doc(drivers[index]['email'])
-                                              .update({'orders': 0});
-                                        },
+                                      CustomSlidable(
+                                        icon: Icons.refresh_outlined,
+                                        label: S().reset,
                                         backgroundColor: const Color.fromARGB(
                                             166, 54, 219, 13),
-                                        icon: Icons.refresh_outlined,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      SlidableAction(
+                                        drivers: drivers,
                                         onPressed: (context) async {
+                                          await FirebaseFirestore.instance
+                                              .collection('users')
+                                              .doc(drivers[index]['email'])
+                                              .update({
+                                            'orders': 0,
+                                          });
+                                        },
+                                      ),
+                                      CustomSlidable(
+                                        label: S().manage,
+                                        drivers: drivers,
+                                        icon:
+                                            Icons.admin_panel_settings_outlined,
+                                        backgroundColor: const Color.fromARGB(
+                                            166, 13, 143, 219),
+                                        onPressed: (context) {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -137,11 +147,7 @@ class _ManageDriversState extends State<ManageDrivers> {
                                             ),
                                           );
                                         },
-                                        backgroundColor: const Color.fromARGB(
-                                            166, 13, 143, 219),
-                                        icon: Icons.manage_accounts_rounded,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
+                                      )
                                     ],
                                   ),
                                   child: DriverData(

@@ -83,8 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choose Food Price"),
         "chooseImageButton":
             MessageLookupByLibrary.simpleMessage("Choose Image"),
-        "chooseNewRoleHere":
-            MessageLookupByLibrary.simpleMessage("choose new role here"),
+        "noFoodFound": MessageLookupByLibrary.simpleMessage("No Food Found"),
+        "chooseNewRoleHere": MessageLookupByLibrary.simpleMessage("new role"),
         "choosePhoto": MessageLookupByLibrary.simpleMessage("Choose Photo"),
         "chooseProfilePhotoSubtitle":
             MessageLookupByLibrary.simpleMessage("Optional But Recommended"),
@@ -228,14 +228,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please Choose Food Image"),
         "pleaseSelectRole":
             MessageLookupByLibrary.simpleMessage("Please select a role"),
-        "pricePerOrderWhenDriver": MessageLookupByLibrary.simpleMessage(
-            "price per order (when new role is driver)"),
+        "pricePerOrderWhenDriver":
+            MessageLookupByLibrary.simpleMessage("price per order"),
         "proceedToPayment":
             MessageLookupByLibrary.simpleMessage("Proceed To Payment"),
         "pricePerOrder":
             MessageLookupByLibrary.simpleMessage("Price Per Order"),
+        "signOutConfirmation": MessageLookupByLibrary.simpleMessage(
+            "Are you sure you want to sign out ?!"),
         "profile": MessageLookupByLibrary.simpleMessage("Profile"),
         "profileAdmin": MessageLookupByLibrary.simpleMessage("Admin Profile"),
+        "reset": MessageLookupByLibrary.simpleMessage("reset"),
+        "manage": MessageLookupByLibrary.simpleMessage("manage"),
         "profileDriver": MessageLookupByLibrary.simpleMessage("Driver Profile"),
         "profileErrorWithDetails": m6,
         "quantityLabel": m7,

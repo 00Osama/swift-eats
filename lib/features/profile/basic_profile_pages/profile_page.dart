@@ -3,6 +3,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/add_new_food.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/change_role.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/edit_foods.dart';
@@ -283,6 +284,144 @@ class ProFilePage extends StatelessWidget {
                   )
                 : SizedBox(),
             //////////////////////////////////////////////////////////////////////
+            role == 'admin' ? const SizedBox(height: 20) : SizedBox(),
+            FractionallySizedBox(
+              widthFactor: 0.90,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromARGB(178, 244, 67, 54),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: 0,
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      final theme = Theme.of(context);
+                      final colors = theme.colorScheme;
+
+                      return Dialog(
+                        elevation: 0,
+                        backgroundColor: colors.surface,
+                        insetPadding:
+                            const EdgeInsets.symmetric(horizontal: 40),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 64,
+                                height: 64,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: colors.errorContainer.withOpacity(.35),
+                                ),
+                                child: Icon(
+                                  Icons.logout_rounded,
+                                  size: 30,
+                                  color: colors.error,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                S().accountInfoSignOut,
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                S().signOutConfirmation,
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.textTheme.bodyMedium?.color
+                                      ?.withOpacity(.7),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.green,
+                                        side: const BorderSide(
+                                          color: Colors.green,
+                                          width: 1.5,
+                                        ),
+                                        minimumSize: const Size.fromHeight(46),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                      child: Text(
+                                        S().cancel,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: OutlinedButton(
+                                      onPressed: () async {
+                                        Navigator.pop(context);
+                                        await AuthService().signOut();
+                                      },
+                                      style: OutlinedButton.styleFrom(
+                                        foregroundColor: Colors.red,
+                                        side: const BorderSide(
+                                          color: Colors.red,
+                                          width: 1.5,
+                                        ),
+                                        minimumSize: const Size.fromHeight(46),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(14),
+                                        ),
+                                      ),
+                                      child: FittedBox(
+                                        child: Text(
+                                          S().accountInfoSignOut,
+                                          maxLines: 1,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  S.of(context).accountInfoSignOut,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontFamily: 'Ubuntu',
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
           ],
         ),

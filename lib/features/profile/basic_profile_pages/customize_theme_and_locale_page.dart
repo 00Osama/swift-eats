@@ -37,33 +37,6 @@ class ThemeAndLocale extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           children: [
             _SectionCard(
-              icon: Icons.language_rounded,
-              title: S.of(context).language,
-              children: [
-                ModernSelectionTile(
-                  title: S.of(context).languageOptionEnglish,
-                  icon: Icons.language,
-                  selected: languageState == LanguageState.english,
-                  onTap: () {
-                    context
-                        .read<LanguageCubit>()
-                        .setLanguage(LanguageState.english);
-                  },
-                ),
-                ModernSelectionTile(
-                  title: S.of(context).languageOptionArabic,
-                  icon: Icons.translate_rounded,
-                  selected: languageState == LanguageState.arabic,
-                  onTap: () {
-                    context
-                        .read<LanguageCubit>()
-                        .setLanguage(LanguageState.arabic);
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            _SectionCard(
               icon: Icons.palette_rounded,
               title: S.of(context).themeSectionTitle,
               children: [
@@ -89,6 +62,33 @@ class ThemeAndLocale extends StatelessWidget {
                   selected: themeState == ThemeState.dark,
                   onTap: () {
                     context.read<ThemeCubit>().setThemeMode(ThemeState.dark);
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 24),
+            _SectionCard(
+              icon: Icons.language_rounded,
+              title: S.of(context).language,
+              children: [
+                ModernSelectionTile(
+                  title: S.of(context).languageOptionEnglish,
+                  icon: Icons.language,
+                  selected: languageState == LanguageState.english,
+                  onTap: () {
+                    context
+                        .read<LanguageCubit>()
+                        .setLanguage(LanguageState.english);
+                  },
+                ),
+                ModernSelectionTile(
+                  title: S.of(context).languageOptionArabic,
+                  icon: Icons.translate_rounded,
+                  selected: languageState == LanguageState.arabic,
+                  onTap: () {
+                    context
+                        .read<LanguageCubit>()
+                        .setLanguage(LanguageState.arabic);
                   },
                 ),
               ],

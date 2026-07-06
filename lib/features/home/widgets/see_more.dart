@@ -13,7 +13,8 @@ class SeeMore extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: AppColors.transparent,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
         shadowColor: AppColors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -48,13 +49,13 @@ class SeeMore extends StatelessWidget {
             childWidget: SizedBox(
               height: 270,
               child: FoodBuilder(
-                category: S.of(context).foodsEditing,
+                category: 'Foods    ',
                 numberOfCards: 1,
                 adminActions: false,
               ),
             ),
           ),
-          MyDivider(dividerHeight: 7, verticalSpace: 25),
+          MyDivider(dividerHeight: 5, verticalSpace: 25),
           Padding(
             padding: EdgeInsets.only(left: 20),
             child: DrinksNonActive(),
@@ -64,14 +65,14 @@ class SeeMore extends StatelessWidget {
             childWidget: SizedBox(
               height: 270,
               child: FoodBuilder(
-                category: S.of(context).drinksEditing,
+                category: 'Drinks    ',
                 numberOfCards: 1,
                 adminActions: false,
               ),
             ),
           ),
           SizedBox(height: 10),
-          MyDivider(dividerHeight: 7, verticalSpace: 25),
+          MyDivider(dividerHeight: 5, verticalSpace: 25),
           Padding(
             padding: EdgeInsets.only(left: 20),
             child: SnacksNonActive(),
@@ -81,14 +82,14 @@ class SeeMore extends StatelessWidget {
             childWidget: SizedBox(
               height: 270,
               child: FoodBuilder(
-                category: S.of(context).snacksEditing,
+                category: 'Snacks    ',
                 numberOfCards: 1,
                 adminActions: false,
               ),
             ),
           ),
           SizedBox(height: 10),
-          MyDivider(dividerHeight: 7, verticalSpace: 25),
+          MyDivider(dividerHeight: 5, verticalSpace: 25),
           Padding(
             padding: EdgeInsets.only(left: 20),
             child: DessertsNonActive(),
@@ -98,7 +99,7 @@ class SeeMore extends StatelessWidget {
             childWidget: SizedBox(
               height: 270,
               child: FoodBuilder(
-                category: S.of(context).dessertsEditing,
+                category: 'Desserts    ',
                 numberOfCards: 1,
                 adminActions: false,
               ),
