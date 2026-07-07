@@ -116,7 +116,7 @@ class _ManageDriversState extends State<ManageDrivers> {
                                     motion: const StretchMotion(),
                                     children: [
                                       CustomSlidable(
-                                        icon: Icons.refresh_outlined,
+                                        icon: Icons.refresh_rounded,
                                         label: S().reset,
                                         backgroundColor: const Color.fromARGB(
                                             166, 54, 219, 13),

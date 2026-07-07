@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 
 class DriverData extends StatelessWidget {
@@ -15,7 +16,6 @@ class DriverData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final driver = drivers[index];
-
     final int orders = driver['orders'] ?? 0;
     final int salaryPerOrder = driver['salaryPerOrder'] ?? 0;
     final int salary = driver['orders'] * driver['salaryPerOrder'];
@@ -37,23 +37,9 @@ class DriverData extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          /// Driver Information
           Row(
             children: [
-              CircleAvatar(
-                radius: 25,
-                backgroundColor: AppColors.primary.withOpacity(.12),
-                backgroundImage: image.isNotEmpty && image != "imageUrl!"
-                    ? NetworkImage(image)
-                    : null,
-                child: image.isEmpty
-                    ? Icon(
-                        Icons.person_rounded,
-                        color: AppColors.primary,
-                        size: 28,
-                      )
-                    : null,
-              ),
+              MyShimmerImage(profileImageUrl: image, size: 70),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -94,9 +80,7 @@ class DriverData extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: 14),
-
           Row(
             children: [
               Expanded(

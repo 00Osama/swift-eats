@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 
 // ignore: must_be_immutable
 class CartItem extends StatefulWidget {
@@ -37,28 +37,17 @@ class _CartItemState extends State<CartItem> {
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: SizedBox(
-                width: 75,
-                height: 75,
-                child: ClipOval(
-                  child: FancyShimmerImage(
-                    imageUrl: widget.item['image'],
-                    shimmerBaseColor: AppColors.skeletonBase,
-                    shimmerHighlightColor: AppColors.white,
-                    boxFit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            MyShimmerImage(
+              profileImageUrl: widget.item['image'],
+              size: 75,
             ),
+            SizedBox(width: 3),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
                     width: 115,
@@ -71,7 +60,6 @@ class _CartItemState extends State<CartItem> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 6),
                   SizedBox(
                     width: 100,
                     child: Text(
@@ -159,4 +147,3 @@ class _CartItemState extends State<CartItem> {
     );
   }
 }
-

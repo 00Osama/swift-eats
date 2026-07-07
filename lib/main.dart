@@ -9,6 +9,7 @@ import 'package:fooddeliveryapp/core/theme/theme_cubit.dart';
 import 'package:fooddeliveryapp/features/auth/pages/splash_page.dart';
 import 'package:fooddeliveryapp/firebase_options.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
+// defaultImage is the key for no image
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

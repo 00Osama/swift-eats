@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/core/widgets/MyTextfield.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/global_fields.dart';
 
@@ -79,18 +79,8 @@ class _OrderItemState extends State<OrderItem> {
                 const SizedBox(height: 5),
                 Row(
                   children: [
-                    SizedBox(
-                      width: 75,
-                      height: 75,
-                      child: ClipOval(
-                        child: FancyShimmerImage(
-                          imageUrl: widget.image,
-                          shimmerBaseColor: AppColors.skeletonBase,
-                          shimmerHighlightColor: AppColors.white,
-                          boxFit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    MyShimmerImage(profileImageUrl: widget.image, size: 75),
+                    const SizedBox(width: 5),
                     Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Column(
@@ -108,7 +98,6 @@ class _OrderItemState extends State<OrderItem> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 6),
                           SizedBox(
                             width: 200,
                             child: Text(
@@ -120,7 +109,6 @@ class _OrderItemState extends State<OrderItem> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 6),
                           SizedBox(
                             width: 200,
                             child: Text(

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/core/widgets/MyTextfield.dart';
@@ -43,10 +44,8 @@ class _EditFoodState extends State<EditFood> {
     super.initState();
     foodName.text = widget.food['foodName'];
     foodPrice.text = widget.food['foodPrice'];
-    pickedImage = Image.network(
-      widget.food['foodImage'],
-      fit: BoxFit.cover,
-    );
+    pickedImage =
+        MyShimmerImage(profileImageUrl: widget.food['foodImage'], size: 85);
     imagePath = widget.food['ImagePath'];
   }
 

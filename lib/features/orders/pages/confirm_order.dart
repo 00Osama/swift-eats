@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/core/widgets/MyTextfield.dart';
@@ -35,40 +36,47 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
   String? addressErrorText;
 
   @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isPortrait = screenHeight > screenWidth;
+  void dispose() {
+    name.dispose();
+    phoneNumber.dispose();
+    address.dispose();
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.transparent,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Center(
-          child: Container(
-            width: isPortrait ? screenWidth * 0.9 : screenWidth * 0.6,
-            height: isPortrait ? screenHeight * 0.7 : screenHeight * 0.85,
-            decoration: BoxDecoration(
-              color: AppColors.skeletonBase,
-              borderRadius: BorderRadius.circular(20),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          surfaceTintColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: AppColors.transparent,
+          shadowColor: AppColors.transparent,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(
+            S.of(context).confirmOrder,
+            style: TextStyle(
+              fontSize: 16,
+              fontFamily: 'Ubuntu',
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.secondary,
             ),
-            child: SingleChildScrollView(
+          ),
+          centerTitle: true,
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+            child: Center(
               child: Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      S.of(context).orderDetails,
-                      style: TextStyle(
-                        color: AppColors.black,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Ubuntu',
-                        fontSize: 20,
-                      ),
-                    ),
-                    const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -77,20 +85,10 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                           height: 90,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.muted.withValues(alpha: 0.5),
-                                spreadRadius: 8,
-                                blurRadius: 9,
-                                offset: const Offset(0, 3),
-                              ),
-                            ],
                           ),
-                          child: ClipOval(
-                            child: Image.network(
-                              widget.image,
-                              fit: BoxFit.cover,
-                            ),
+                          child: MyShimmerImage(
+                            profileImageUrl: widget.image,
+                            size: 90,
                           ),
                         ),
                         const SizedBox(width: 16),
@@ -152,6 +150,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                             ),
                             child: Image.asset(
                               'assets/images/minus.png',
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -179,12 +178,15 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                               color: AppColors.danger,
                               shape: BoxShape.circle,
                             ),
-                            child: const Icon(Icons.add_rounded),
+                            child: const Icon(
+                              Icons.add_rounded,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 20),
                     MyTextField(
                       readOnly: false,
                       controller: name,
@@ -192,6 +194,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                       obscureText: false,
                       errorText: nameErrorText,
                     ),
+                    const SizedBox(width: 8),
                     MyTextField(
                       readOnly: false,
                       controller: phoneNumber,
@@ -200,6 +203,7 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
                       errorText: phoneNumberErrorText,
                       inputType: TextInputType.number,
                     ),
+                    const SizedBox(width: 8),
                     MyTextField(
                       readOnly: false,
                       controller: address,
@@ -334,8 +338,6 @@ class _ConfirmOrderState extends State<ConfirmOrder> {
               ),
             ),
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

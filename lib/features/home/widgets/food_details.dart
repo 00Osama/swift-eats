@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
-import 'package:fooddeliveryapp/features/orders/widgets/confirm_order.dart';
+import 'package:fooddeliveryapp/features/orders/pages/confirm_order.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({
@@ -25,6 +26,7 @@ class DetailsScreen extends StatefulWidget {
 
 class _DetailsScreenState extends State<DetailsScreen> {
   String cartText = '';
+  bool isCartLoading = false;
 
   Future<void> checkDocumentExistence() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
@@ -44,29 +46,41 @@ class _DetailsScreenState extends State<DetailsScreen> {
   }
 
   Future<void> toggleCart() async {
+    setState(() {
+      isCartLoading = true;
+    });
+
     DocumentReference cartDocRef = FirebaseFirestore.instance
         .collection('users')
         .doc(FirebaseAuth.instance.currentUser!.email)
         .collection('cart')
         .doc(widget.food!.id);
 
-    DocumentSnapshot documentSnapshot = await cartDocRef.get();
+    try {
+      DocumentSnapshot documentSnapshot = await cartDocRef.get();
 
-    if (documentSnapshot.exists) {
-      // Remove from cart
-      await cartDocRef.delete();
-    } else {
-      // Add to cart
-      await cartDocRef.set({
-        'image': widget.image,
-        'name': widget.foodName,
-        'price': widget.foodPrice,
-        'timeStamp': Timestamp.now(),
-        'quantity': '1',
-      });
+      if (documentSnapshot.exists) {
+        // Remove from cart
+        await cartDocRef.delete();
+      } else {
+        // Add to cart
+        await cartDocRef.set({
+          'image': widget.image,
+          'name': widget.foodName,
+          'price': widget.foodPrice,
+          'timeStamp': Timestamp.now(),
+          'quantity': '1',
+        });
+      }
+
+      await checkDocumentExistence(); // Refresh the button text
+    } finally {
+      if (mounted) {
+        setState(() {
+          isCartLoading = false;
+        });
+      }
     }
-
-    checkDocumentExistence(); // Refresh the button text
   }
 
   String? role;
@@ -109,8 +123,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           // Current time is within the allowed order time
           Navigator.push(
             context,
-            DialogRoute(
-              context: context,
+            MaterialPageRoute(
               builder: (context) => ConfirmOrder(
                 foodName: widget.foodName,
                 foodPrice: int.parse(widget.foodPrice),
@@ -176,27 +189,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
           children: [
             const Spacer(flex: 1),
             const SizedBox(height: 10),
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.muted.withValues(alpha: 0.5),
-                    spreadRadius: 8,
-                    blurRadius: 9,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ClipOval(
-                child: Image.network(
-                  widget.image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
+            MyShimmerImage(profileImageUrl: widget.image, size: 150),
             const SizedBox(height: 20),
             Text(
               widget.foodName,
@@ -254,7 +247,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
-                        onPressed: toggleCart,
+                        onPressed: isCartLoading ? null : toggleCart,
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(
                             const Color.fromARGB(255, 239, 48, 41),
@@ -266,13 +259,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             ),
                           ),
                         ),
-                        child: Text(
-                          cartText,
-                          style: const TextStyle(
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: isCartLoading
+                            ? const SizedBox(
+                                width: 22,
+                                height: 22,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2.5,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                ),
+                              )
+                            : Text(
+                                cartText,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ),
                   ),

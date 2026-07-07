@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/add_new_food.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/change_role.dart';
@@ -131,18 +131,9 @@ class ProFilePage extends StatelessWidget {
                 var userData = snapshot.data!.data() as Map<String, dynamic>;
                 return Column(
                   children: [
-                    SizedBox(
-                      width: 150,
-                      height: 150,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10000),
-                        child: FancyShimmerImage(
-                          imageUrl: userData['profileImage'],
-                          shimmerBaseColor: AppColors.skeletonDark,
-                          shimmerHighlightColor: AppColors.white,
-                          boxFit: BoxFit.cover,
-                        ),
-                      ),
+                    MyShimmerImage(
+                      profileImageUrl: userData['profileImage'],
+                      size: 150,
                     ),
                     const SizedBox(height: 10),
                     Text(

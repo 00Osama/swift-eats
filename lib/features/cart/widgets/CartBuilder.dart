@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddeliveryapp/generated/l10n.dart';
-import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/features/cart/widgets/CartItem.dart';
-import 'package:fooddeliveryapp/features/orders/widgets/confirm_order.dart';
+import 'package:fooddeliveryapp/features/cart/widgets/cart_custom_slidable_action.dart';
+import 'package:fooddeliveryapp/features/orders/pages/confirm_order.dart';
+import 'package:fooddeliveryapp/generated/l10n.dart';
 
 class CartBuilder extends StatefulWidget {
   const CartBuilder({super.key});
@@ -26,13 +27,14 @@ class _CartBuilderState extends State<CartBuilder> {
         .doc(FirebaseAuth.instance.currentUser!.email)
         .get();
 
-    setState(() {
-      role = userData['role'];
-    });
+    if (mounted) {
+      setState(() {
+        role = userData['role'];
+      });
+    }
   }
 
   Future<void> checkOrderTime() async {
-    // Fetch the 'time' document from Firestore
     DocumentSnapshot timeDoc = await FirebaseFirestore.instance
         .collection('Order Time')
         .doc('time')
@@ -61,18 +63,21 @@ class _CartBuilderState extends State<CartBuilder> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Text(S
-                .of(context)
-                .profileErrorWithDetails(snapshot.error.toString())),
+            child: Text(
+              S.of(context).profileErrorWithDetails(snapshot.error.toString()),
+            ),
           );
         }
 
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: CircularProgressIndicator(color: AppColors.neutralButton));
+            child: CircularProgressIndicator(
+              color: AppColors.neutralButton,
+            ),
+          );
         }
 
-        if (snapshot.data!.docs.isEmpty) {
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Center(
             child: Text(
               S.of(context).noItemsFoundInCart,
@@ -83,92 +88,79 @@ class _CartBuilderState extends State<CartBuilder> {
           );
         }
 
-        List cart = snapshot.data!.docs;
+        final cart = snapshot.data!.docs;
+
         return ListView.builder(
           itemCount: cart.length,
           itemBuilder: (context, index) {
-            DocumentSnapshot cartItem = cart[index];
+            final cartItem = cart[index];
 
-            return Column(
-              children: [
-                Slidable(
-                  endActionPane: ActionPane(
-                    motion: const StretchMotion(),
-                    children: [
-                      SlidableAction(
-                        onPressed: (context) async {
-                          setState(
-                            () {
-                              FirebaseFirestore.instance
-                                  .collection('users')
-                                  .doc(FirebaseAuth.instance.currentUser!.email)
-                                  .collection('cart')
-                                  .doc(cartItem.id)
-                                  .delete();
-                            },
-                          );
-                        },
-                        backgroundColor: const Color.fromARGB(166, 219, 13, 13),
-                        icon: Icons.delete_rounded,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      role == 'user'
-                          ? SlidableAction(
-                              onPressed: (context) {
-                                if (currentHourTime > start! &&
-                                    currentHourTime < end!) {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return ConfirmOrder(
-                                        foodName: cart[index]['name'],
-                                        foodPrice:
-                                            int.parse(cart[index]['price']),
-                                        image: cart[index]['image'],
-                                        amount:
-                                            int.parse(cart[index]['quantity']),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title:
-                                            Text(S.of(context).orderNotAllowed),
-                                        content: Text(S
-                                            .of(context)
-                                            .allowedTimeBetween(
-                                                start.toString(),
-                                                end.toString())),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: Text(S.of(context).ok),
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 15),
+              child: Slidable(
+                endActionPane: ActionPane(
+                  motion: const StretchMotion(),
+                  extentRatio: .42,
+                  children: [
+                    CartCustomSlideAction(
+                      color: Colors.red.shade500,
+                      icon: Icons.delete_rounded,
+                      onTap: () {
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.email)
+                            .collection('cart')
+                            .doc(cartItem.id)
+                            .delete();
+                      },
+                    ),
+                    role == 'user'
+                        ? CartCustomSlideAction(
+                            color: Colors.green.shade600,
+                            icon: Icons.delivery_dining_rounded,
+                            onTap: () {
+                              if (start != null &&
+                                  end != null &&
+                                  currentHourTime > start! &&
+                                  currentHourTime < end!) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ConfirmOrder(
+                                    foodName: cart[index]['name'],
+                                    foodPrice: int.parse(cart[index]['price']),
+                                    image: cart[index]['image'],
+                                    amount: int.parse(cart[index]['quantity']),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    title: Text(S.of(context).orderNotAllowed),
+                                    content: Text(
+                                      S.of(context).allowedTimeBetween(
+                                            start.toString(),
+                                            end.toString(),
                                           ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              backgroundColor:
-                                  const Color.fromARGB(166, 11, 175, 39),
-                              icon: Icons.delivery_dining,
-                              borderRadius: BorderRadius.circular(20),
-                            )
-                          : SizedBox(),
-                    ],
-                  ),
-                  child: CartItem(
-                    item: cartItem,
-                  ),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text(S.of(context).ok),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                        : SizedBox(),
+                  ],
                 ),
-                const SizedBox(height: 15),
-              ],
+                child: CartItem(item: cartItem),
+              ),
             );
           },
         );

@@ -1,11 +1,11 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/features/profile/admin_permissions_pages/edit_food.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:fooddeliveryapp/core/helpers/error_message.dart';
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 
 class FoodItem extends StatelessWidget {
   const FoodItem({
@@ -51,8 +51,6 @@ class FoodItem extends StatelessWidget {
 
               /// IMAGE
               Container(
-                width: imageSize,
-                height: imageSize,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   boxShadow: [
@@ -63,10 +61,9 @@ class FoodItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: ClipOval(
-                  child: FancyShimmerImage(
-                    imageUrl: food['foodImage'],
-                  ),
+                child: MyShimmerImage(
+                  profileImageUrl: food['foodImage'],
+                  size: imageSize,
                 ),
               ),
 

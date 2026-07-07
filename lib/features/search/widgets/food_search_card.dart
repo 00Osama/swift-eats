@@ -1,6 +1,6 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 
 class FoodSearchCard extends StatelessWidget {
   const FoodSearchCard({super.key, required this.food});
@@ -22,17 +22,9 @@ class FoodSearchCard extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 10),
-              SizedBox(
-                width: 85,
-                height: 85,
-                child: ClipOval(
-                  child: FancyShimmerImage(
-                    imageUrl: food['foodImage'],
-                    shimmerBaseColor: AppColors.skeletonBase,
-                    shimmerHighlightColor: AppColors.white,
-                    boxFit: BoxFit.cover,
-                  ),
-                ),
+              ClipOval(
+                child: MyShimmerImage(
+                    profileImageUrl: food['foodImage'], size: 85),
               ),
               const SizedBox(width: 15),
               Column(

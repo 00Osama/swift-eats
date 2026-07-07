@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
-import 'package:fooddeliveryapp/features/auth/widgets/auth_gate.dart';
+import 'package:fooddeliveryapp/core/widgets/internet_connectivity.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const AuthGate(),
+          builder: (context) => const InternetConnectivity(),
         ),
       );
     }
