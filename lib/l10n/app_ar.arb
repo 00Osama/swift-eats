@@ -5,7 +5,7 @@
   "ok": "موافق",
   "signUp": "إنشاء حساب",
   "signIn": "تسجيل الدخول",
-  "forgotPassword": "نسيت كلمة المرور؟",
+  "forgotPassword": "نسيت كلمة المرور",
   "emailAddress": "البريد الإلكتروني",
   "password": "كلمة المرور",
   "confirmPassword": "تأكيد كلمة المرور",
@@ -84,8 +84,8 @@
   "sendEmail": "إرسال البريد الإلكتروني",
   "passwordResetLinkSent": "تم إرسال رابط إعادة تعيين كلمة المرور! افحص بريدك الإلكتروني.",
   "tryAgain": "حاول مرة أخرى",
-  "onboardingFoodFor": "طعام لـ",
-  "onboardingEveryone": "الجميع",
+  "onboardingFoodFor": "طعــــــام لـــ",
+  "onboardingEveryone": "للــجمـــيـــع",
   "onboardingNext": "التالي",
   "loginTitle": "تسجيل الدخول",
   "loginSubtitle": "مرحبًا بعودتك",
@@ -197,5 +197,6 @@
   "signOutConfirmation": "هل أنت متأكد أنك تريد تسجيل الخروج !؟", 
   "reset": "إعادة تعيين", 
   "manage": "إدارة", 
-  "noFoodFound": "لم يتم العثور على طعام"
+  "noFoodFound": "لم يتم العثور على طعام", 
+  "continueToSignUp": "المتابعة لإنشاء حساب"
 }

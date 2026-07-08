@@ -2,14 +2,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
-import 'package:flutter/services.dart';
 import 'package:fooddeliveryapp/core/widgets/MyButton.dart';
 import 'package:fooddeliveryapp/core/helpers/error_message.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_gate.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:fooddeliveryapp/global_fields.dart';
@@ -188,27 +186,17 @@ class _ChooseProfilePhotoState extends State<ChooseProfilePhoto> {
   String? imageUrl;
 
   Future<void> uploadImage(BuildContext context) async {
-    File? fileToUpload;
-
-    if (imageFile != null) {
-      fileToUpload = imageFile;
-    } else {
-      // Load the default image from assets
-      ByteData byteData =
-          await rootBundle.load('assets/images/defult person.jpg');
-      // Get the temporary directory
-      Directory tempDir = await getTemporaryDirectory();
-      // Create a file
-      fileToUpload = File('${tempDir.path}/default_person.jpg');
-      // Write the byte data to the file
-      await fileToUpload.writeAsBytes(byteData.buffer.asUint8List());
+    if (imageFile == null) {
+      imageUrl = 'defaultImage';
+      imagePath = null;
+      return;
     }
 
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
-      String fileName = fileToUpload!.path.split('/').last;
+      String fileName = imageFile!.path.split('/').last;
       Reference ref = storage.ref().child('profile/$fileName');
-      UploadTask uploadTask = ref.putFile(fileToUpload);
+      UploadTask uploadTask = ref.putFile(imageFile!);
 
       imageUrl = await (await uploadTask).ref.getDownloadURL();
       imagePath = ref.fullPath;
@@ -290,9 +278,7 @@ class _ChooseProfilePhotoState extends State<ChooseProfilePhoto> {
               ),
             ),
             SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.end,
+            Column(
               children: [
                 SizedBox(
                   width: 200,
@@ -302,73 +288,81 @@ class _ChooseProfilePhotoState extends State<ChooseProfilePhoto> {
                     child: pickedImage,
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      pickedImage = Image.asset(
-                        'assets/images/defult person.jpg',
-                      );
-                    });
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: AppColors.danger,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Icon(
-                      Icons.delete_rounded,
-                      color: AppColors.white,
+                if (isImagePicked) ...[
+                  SizedBox(height: 12),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        imageFile = null;
+                        imagePath = null;
+                        imageUrl = null;
+                        isImagePicked = false;
+                        pickedImage = Image.asset(
+                          'assets/images/defult person.jpg',
+                        );
+                      });
+                    },
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: AppColors.danger,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.delete_rounded,
+                        color: AppColors.danger,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
             ),
-            SizedBox(height: 30),
-            Row(
+            SizedBox(height: 20),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: MyButton(
-                      color: AppColors.primary,
-                      text: S.of(context).choosePhoto,
-                      onPressed: () async {
-                        Map<Permission, PermissionStatus> statuses = await [
-                          Permission.storage,
-                          Permission.camera
-                        ].request();
-                        if (statuses[Permission.storage]!.isGranted &&
-                            statuses[Permission.camera]!.isGranted) {
-                          showImagePicker(context);
-                        } else {
-                          _showPermissionDeniedDialog(context);
-                        }
-                        setState(() {});
-                      },
-                    ),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyButton(
+                    color: AppColors.primary,
+                    text: S.of(context).choosePhoto,
+                    onPressed: () async {
+                      Map<Permission, PermissionStatus> statuses = await [
+                        Permission.storage,
+                        Permission.camera
+                      ].request();
+                      if (statuses[Permission.storage]!.isGranted &&
+                          statuses[Permission.camera]!.isGranted) {
+                        showImagePicker(context);
+                      } else {
+                        _showPermissionDeniedDialog(context);
+                      }
+                      setState(() {});
+                    },
                   ),
                 ),
-                Expanded(
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: MyButton(
-                      color: AppColors.primary,
-                      text: S.of(context).signUp,
-                      onPressed: () async {
-                        showDialog(
-                          context: context,
-                          builder: (context) => const Center(
-                            child: CircularProgressIndicator(
-                                color: AppColors.black),
-                          ),
-                        );
-                        await uploadImage(context);
-                        signUP();
-                      },
-                    ),
+                SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: MyButton(
+                    color: AppColors.primary,
+                    text: S.of(context).continueToSignUp,
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (context) => const Center(
+                          child:
+                              CircularProgressIndicator(color: AppColors.black),
+                        ),
+                      );
+                      await uploadImage(context);
+                      signUP();
+                    },
                   ),
                 ),
               ],

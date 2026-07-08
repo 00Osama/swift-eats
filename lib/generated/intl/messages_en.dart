@@ -151,8 +151,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "foodPriceHint": MessageLookupByLibrary.simpleMessage("Food Price"),
         "foods": MessageLookupByLibrary.simpleMessage("Foods"),
         "foodsEditing": MessageLookupByLibrary.simpleMessage("Foods"),
+        "continueToSignUp":
+            MessageLookupByLibrary.simpleMessage("Continue to Sign Up"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("Forgot Password?"),
+            MessageLookupByLibrary.simpleMessage("Forgot Password"),
         "fullName": MessageLookupByLibrary.simpleMessage("Full Name"),
         "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
         "goLogin": MessageLookupByLibrary.simpleMessage("Go to Login"),

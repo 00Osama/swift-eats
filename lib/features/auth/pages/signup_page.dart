@@ -6,7 +6,7 @@ import 'package:fooddeliveryapp/core/widgets/MyButton.dart';
 import 'package:fooddeliveryapp/core/helpers/error_message.dart';
 import 'package:fooddeliveryapp/features/auth/pages/choose_profile_photo.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
-import 'package:fooddeliveryapp/features/auth/widgets/login_Item.dart';
+import 'package:fooddeliveryapp/features/auth/widgets/auth_Item.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/signup_row.dart';
 import 'package:fooddeliveryapp/global_fields.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
@@ -78,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ListView(
         children: [
-          LoginItem(row: const SignUpRow()),
+          AuthItem(authOperation: const SignUpRow()),
           const SizedBox(height: 30),
           MyTextField(
             readOnly: false,
@@ -120,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
             obscureText: true,
             errorText: confirmPasswordErrorText,
           ),
-          const SizedBox(height: 60),
+          const SizedBox(height: 50),
           MyButton(
             color: AppColors.primary,
             text: S.of(context).signUp,
@@ -223,4 +223,3 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
-

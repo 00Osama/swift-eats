@@ -155,7 +155,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "foods": MessageLookupByLibrary.simpleMessage("الأطعمة"),
         "foodsEditing": MessageLookupByLibrary.simpleMessage("الأطعمة"),
         "forgotPassword":
-            MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور؟"),
+            MessageLookupByLibrary.simpleMessage("نسيت كلمة المرور"),
         "fullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
         "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
         "goLogin":
@@ -200,9 +200,13 @@ class MessageLookup extends MessageLookupByLibrary {
             "لم يتم العثور على عناصر في السلة"),
         "noOrdersFound": MessageLookupByLibrary.simpleMessage("لا توجد طلبات"),
         "ok": MessageLookupByLibrary.simpleMessage("موافق"),
-        "onboardingEveryone": MessageLookupByLibrary.simpleMessage("الجميع"),
-        "onboardingFoodFor": MessageLookupByLibrary.simpleMessage("طعام لـ"),
+        "onboardingEveryone":
+            MessageLookupByLibrary.simpleMessage("للــجمـــيـــع"),
+        "onboardingFoodFor":
+            MessageLookupByLibrary.simpleMessage("طعــــــام لـــ"),
         "onboardingNext": MessageLookupByLibrary.simpleMessage("التالي"),
+        "continueToSignUp":
+            MessageLookupByLibrary.simpleMessage("المتابعة لإنشاء حساب"),
         "orderConfirmedSuccessfully":
             MessageLookupByLibrary.simpleMessage("تم تأكيد الطلب بنجاح"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الطلب"),

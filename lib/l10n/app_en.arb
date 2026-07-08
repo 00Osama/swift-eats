@@ -5,7 +5,7 @@
   "ok": "OK",
   "signUp": "Sign Up",
   "signIn": "Sign In",
-  "forgotPassword": "Forgot Password?",
+  "forgotPassword": "Forgot Password",
   "emailAddress": "Email Address",
   "password": "Password",
   "confirmPassword": "Confirm Password",
@@ -197,5 +197,6 @@
   "signOutConfirmation": "Are you sure you want to sign out ?!", 
   "reset": "Reset", 
   "manage": "manage", 
-  "noFoodFound": "No Food Found"
+  "noFoodFound": "No Food Found", 
+  "continueToSignUp": "Continue to Sign Up"
 }

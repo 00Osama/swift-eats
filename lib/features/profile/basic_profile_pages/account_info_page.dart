@@ -1,5 +1,5 @@
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddeliveryapp/core/widgets/my_shimmer_image.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 import 'package:fooddeliveryapp/core/theme/app_theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -112,20 +112,11 @@ class _AccountInfoState extends State<AccountInfo> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 150,
-                      height: 150,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(75),
-                        child: FancyShimmerImage(
-                          imageUrl: userData['profileImage'],
-                          shimmerBaseColor: AppColors.skeletonBase,
-                          shimmerHighlightColor: AppColors.white,
-                          boxFit: BoxFit.cover,
-                        ),
-                      ),
+                    MyShimmerImage(
+                      profileImageUrl: userData['profileImage'],
+                      size: 150,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 10),
                     Text(
                       userData['FullName'] ?? S.of(context).fullName,
                       style: const TextStyle(

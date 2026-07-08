@@ -112,7 +112,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.email_rounded),
                     Text(
                       ' ${S.of(context).sendEmail}',
                       style: TextStyle(fontWeight: FontWeight.bold),

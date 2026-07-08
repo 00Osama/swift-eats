@@ -25,8 +25,9 @@ class LanguageCubit extends Cubit<LanguageState> {
         emit(LanguageState.arabic);
         break;
       case 'english':
-      default:
         emit(LanguageState.english);
+      default:
+        emit(LanguageState.arabic);
     }
   }
 

@@ -6,7 +6,7 @@ import 'package:fooddeliveryapp/core/helpers/error_message.dart';
 import 'package:fooddeliveryapp/features/auth/pages/forget_password.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_gate.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/auth_service.dart';
-import 'package:fooddeliveryapp/features/auth/widgets/login_Item.dart';
+import 'package:fooddeliveryapp/features/auth/widgets/auth_Item.dart';
 import 'package:fooddeliveryapp/features/auth/widgets/login_row.dart';
 import 'package:fooddeliveryapp/generated/l10n.dart';
 
@@ -68,7 +68,7 @@ class _SigninPageState extends State<SigninPage> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ListView(
         children: [
-          LoginItem(row: const LoginRow()),
+          AuthItem(authOperation: const LoginRow()),
           const SizedBox(height: 30),
           MyTextField(
             readOnly: false,
@@ -86,27 +86,30 @@ class _SigninPageState extends State<SigninPage> {
             errorText: passwordErrorText,
           ),
           const SizedBox(height: 40),
-          GestureDetector(
-            child: Padding(
-              padding: EdgeInsets.only(left: 25),
-              child: Text(
-                S.of(context).forgotPassword,
-                style: TextStyle(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: GestureDetector(
+              child: Padding(
+                padding: EdgeInsets.only(left: 25),
+                child: Text(
+                  S.of(context).forgotPassword,
+                  style: TextStyle(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
                 ),
               ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return ForgetPasswordScreen();
+                  },
+                ));
+              },
             ),
-            onTap: () {
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return ForgetPasswordScreen();
-                },
-              ));
-            },
           ),
-          const SizedBox(height: 130),
+          const SizedBox(height: 10),
           MyButton(
             color: AppColors.primary,
             text: S.of(context).signIn,
@@ -141,4 +144,3 @@ class _SigninPageState extends State<SigninPage> {
     );
   }
 }
-

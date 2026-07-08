@@ -30,29 +30,33 @@ class OnboradingPage extends StatelessWidget {
                   SizedBox(
                     height: screenWidth * 0.03,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: screenWidth * 0.45),
-                    child: Text(
-                      S.of(context).onboardingFoodFor,
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontFamily: 'Ubuntu',
-                        fontSize: screenWidth * 0.1,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        S.of(context).onboardingFoodFor,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontFamily: 'Ubuntu',
+                          fontSize: screenWidth * 0.1,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: screenWidth * 0.45),
-                    child: Text(
-                      S.of(context).onboardingEveryone,
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontFamily: 'Ubuntu',
-                        fontSize: screenWidth * 0.1,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        S.of(context).onboardingEveryone,
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontFamily: 'Ubuntu',
+                          fontSize: screenWidth * 0.1,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                   const Spacer(flex: 1),
                   Image.asset(

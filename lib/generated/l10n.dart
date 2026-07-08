@@ -153,8 +153,18 @@ class S {
   /// `Forgot Password?`
   String get forgotPassword {
     return Intl.message(
-      'Forgot Password?',
+      'Forgot Password',
       name: 'forgotPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue to Sign Up`
+  String get continueToSignUp {
+    return Intl.message(
+      'Continue to Sign Up',
+      name: 'continueToSignUp',
       desc: '',
       args: [],
     );
